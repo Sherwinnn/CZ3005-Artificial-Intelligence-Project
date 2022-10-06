@@ -4,8 +4,9 @@ import Task2
 import Task3
 
 if __name__ == '__main__':
-    start = '1'
-    end = '50'
+
+    start = 1
+    end = 50
     budget = 287932
 
     with open('G.json') as f:
@@ -21,10 +22,10 @@ if __name__ == '__main__':
     Task1.begin(GDict,start,end)
 
     print("Starting Task 2: UCS... \n")
-    Task2.begin(start,end)
+    Task2.begin(GDict, DistDict, CostDict, start, end, budget)
 
     print("Starting Task 3: ... \n")
-    Task3.begin(start,end)
+    Task3.begin(GDict, DistDict, CostDict, CoordDict, start, end, budget)
 
 
     
