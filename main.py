@@ -9,21 +9,21 @@ if __name__ == '__main__':
     budget = 287932
 
     with open('G.json') as f:
-        G = json.load(f)
+        GDict = json.load(f)
     with open('Dist.json') as f:
-        Dist = json.load(f)
+        DistDict = json.load(f)
     with open('Cost.json') as f:
-        Cost = json.load(f)
+        CostDict = json.load(f)
     with open('Coord.json') as f:
-        Coord = json.load(f)
+        CoordDict = json.load(f)
     
-    print("Starting Task 1... \n")
-    Task1.begin(start,end)
+    print("Starting Task 1: Dijkstra ... \n")
+    Task1.begin(GDict,start,end)
 
-    print("Starting Task 2... \n")
+    print("Starting Task 2: UCS... \n")
     Task2.begin(start,end)
 
-    print("Starting Task 2... \n")
+    print("Starting Task 3: ... \n")
     Task3.begin(start,end)
 
 

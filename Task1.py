@@ -1,11 +1,15 @@
-import json
 
-def inputGraph():
-    with open("Graph.json") as f:
-        Gdict = json.load(f)
-    return Gdict
+def dijkstra(graph, start, end):
+    return
 
-def begin():
-    graph = inputGraph()
+def makePath(start,end):
+    return
+
+def displayPath(start,end):
+    return
+    
+def begin(Gdict, start, end):
+    path, cost, numvisited = dijkstra(Gdict,start,end)
+    shortestpath = makePath(path, end)
 
     print()
