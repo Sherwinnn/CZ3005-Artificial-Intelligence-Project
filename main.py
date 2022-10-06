@@ -1,11 +1,7 @@
 import json
 
 
-# 4 Dictionaries needed
-G = {}
-Dist = {}
-Cost = {}
-Coord = {}
+
 
 if __name__ == '__main__':
     with open('G.json') as f:
