@@ -14,6 +14,7 @@ def dijkstra(GDict, start, end):
 
 
 def begin(GDict, start, end):
-    path, cost, numvisited = dijkstra(GDict,start,end)
+    pass
+    # path, cost, numvisited = dijkstra(GDict,start,end)
 
-    print()
+    # print()
