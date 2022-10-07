@@ -1,3 +1,5 @@
+import IOParser
+
 class Node:
     def __init__(self, id, parent, dist, cost):
         self.id = id

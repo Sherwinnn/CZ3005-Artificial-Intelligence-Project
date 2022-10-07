@@ -1,3 +1,5 @@
+import IOParser
+
 def heuristic(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     return
 
