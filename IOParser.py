@@ -16,7 +16,8 @@ def inputParser():
     DistDictParse = {}
     for k,v in DistDict.items():
         uvpair = k.split(',')
-        DistDictParse[(min(int(uvpair[0]),int(uvpair[1])), max(int(uvpair[0]),int(uvpair[1])) )] = v
+        DistDictParse[int(uvpair[0]),int(uvpair[1])] = v
+        DistDictParse[int(uvpair[1]),int(uvpair[0])] = v
 
     
     with open('Cost.json') as f:
@@ -25,7 +26,8 @@ def inputParser():
     CostDictParse = {}
     for k,v in CostDict.items():
         uvpair = k.split(',')
-        CostDictParse[(min(int(uvpair[0]),int(uvpair[1])), max(int(uvpair[0]),int(uvpair[1])) )] = v
+        CostDictParse[int(uvpair[0]),int(uvpair[1])] = v
+        CostDictParse[int(uvpair[1]),int(uvpair[0])] = v
 
     
 

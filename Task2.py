@@ -28,8 +28,8 @@ def UCS(GDict, DistDict, CostDict, start, end, budget):
             break
 
         for v in GDict[u]:
-            dist = DistDict[(min(u,v),max(u,v))] + curDist
-            cost = CostDict[(min(u,v),max(u,v))] + curCost
+            dist = DistDict[(u,v)] + curDist
+            cost = CostDict[(u,v)] + curCost
             if cost > budget:
                 continue
             q.put((dist,(v,u,cost)))
@@ -45,7 +45,7 @@ def UCS(GDict, DistDict, CostDict, start, end, budget):
         print(len(parent[node][int(distV)]), " ".join([str(int) for int in parent[node][int(distV)]]))
         if(oldnode == -1):
             break
-        distV -= DistDict[(min(node,oldnode),max(node,oldnode))]
+        distV -= DistDict[(node,oldnode)]
         node = oldnode
     
     path.reverse()
@@ -59,8 +59,8 @@ def UCS(GDict, DistDict, CostDict, start, end, budget):
         if(node ==986):
             print("CHANGE")
             node = 988
-        distV += DistDict[(min(last,node),max(last,node))]
-        costV += CostDict[(min(last,node),max(last,node))]
+        distV += DistDict[(last,node)]
+        costV += CostDict[(last,node)]
         last = node
     print(distV,costV)
     return (path,ansDist,ansCost)
