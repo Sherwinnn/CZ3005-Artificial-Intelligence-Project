@@ -1,4 +1,3 @@
-from tracemalloc import start
 import IOParser
 from queue import PriorityQueue
 from math import cos,sin,acos
@@ -13,29 +12,38 @@ def heuristic(CostDict, CoordDict, curnode, end, child, distancet, budget):
     return distancet+greatCircleDist
 
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
-    visited = set(())
+    path = []
+    travelled = {}
     openlist = PriorityQueue()
-    openlist.put((0,start))
+    openlist.put( (0, (start,start,0) ) ) #(fvalue, (node, parent, gvalue) )
     distance = 0
 
     while not openlist.empty():
-        curnode = openlist.get()[1]
-        if curnode!=start:
-            distance+=DistDict[min(start,curnode),max(start,curnode)]
-        visited.add(curnode) #move curnode into visited list
+        curnode,parent,distFromStart = openlist.get()[1]
+        # print(curnode)
+        travelled[curnode] = parent
         if curnode==end:
+            distance = distFromStart
+            while (curnode!=start):
+                path.append(curnode)
+                curnode = travelled[parent]
+            path = path[::-1]
             break;
         for child in GDict[curnode]:
-
-            if child not in visited:
-                
+            if child not in travelled:
+                # print("child:",child)
+                distStartToChild = distFromStart+DistDict[min(curnode,child),max(curnode,child)]
                 openlist.put(
                     (
-                        heuristic(CostDict, CoordDict, curnode, end, child, DistDict[curnode,child]+distance, budget),
-                        child
+                        heuristic(CostDict, 
+                        CoordDict, 
+                        curnode, end, child, 
+                        distStartToChild, 
+                        budget),
+                        (child,curnode,distStartToChild)
                     )
                 )
-    return list(visited),distance,0
+    return path,distance,0
 
 def begin(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     return IOParser.outputParser(aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget))
