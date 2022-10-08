@@ -20,13 +20,13 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
 
     while not openlist.empty():
         curnode,parent,distFromStart = openlist.get()[1]
-        # print(curnode)
         travelled[curnode] = parent
         if curnode==end:
             distance = distFromStart
-            while (curnode!=start):
-                path.append(curnode)
-                curnode = travelled[parent]
+            pathnode = end
+            while (pathnode!=start):
+                path.append(pathnode)
+                pathnode = travelled[pathnode]
             path = path[::-1]
             break;
         for child in GDict[curnode]:
@@ -36,7 +36,7 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
                 openlist.put(
                     (
                         heuristic(CostDict, 
-                        CoordDict, 
+                        CoordDict,
                         curnode, end, child, 
                         distStartToChild, 
                         budget),
