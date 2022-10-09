@@ -10,7 +10,7 @@ def dijkstra(GDict, DistDict, start, end):
     pq = PriorityQueue()
     pq.put([0, [start]])
 
-    distanceDict = {start: sys.maxsize}
+    distanceDict = {start : sys.maxsize}
     travelledDict = {}
     
     while pq:
@@ -32,8 +32,9 @@ def dijkstra(GDict, DistDict, start, end):
             newDistance = currentDist+ DistDict[min(currentNode,neighbour),max(currentNode,neighbour)]
 
             if neighbour not in travelledDict and distanceDict[neighbour] > newDistance:
-                pq.put([newDistance, newPath])
                 distanceDict[neighbour] = newDistance
+                pq.put([newDistance, newPath])
+                
     
 
 def begin(GDict, DistDict, start, end):
