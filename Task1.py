@@ -11,14 +11,14 @@ def dijkstra(GDict, DistDict, start, end):
     pq.put([0, [start]])
 
     distanceDict = {start: sys.maxsize}
-    travelled = {}
+    travelledDict = {}
     
     while pq:
         FirstNode = pq.get()
         currentDist = FirstNode[0]
         currentPath = FirstNode[1]
         currentNode = currentPath[-1]
-        travelled[currentNode] = 1
+        travelledDict[currentNode] = 1
 
         if currentNode == end:
             return currentPath, currentDist
@@ -31,7 +31,7 @@ def dijkstra(GDict, DistDict, start, end):
             newPath.append(neighbour)
             newDistance = currentDist+ DistDict[min(currentNode,neighbour),max(currentNode,neighbour)]
 
-            if neighbour not in travelled and distanceDict[neighbour] > newDistance:
+            if neighbour not in travelledDict and distanceDict[neighbour] > newDistance:
                 pq.put([newDistance, newPath])
                 distanceDict[neighbour] = newDistance
     
