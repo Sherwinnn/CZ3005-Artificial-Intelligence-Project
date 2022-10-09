@@ -17,7 +17,7 @@ if __name__ == '__main__':
     GDict, DistDict, CostDict, CoordDict = IOParser.inputParser()
     
     print("Starting Task 1: Dijkstra ... \n")
-    # Task1.begin(GDict,start,end)
+    Task1.begin(GDict, DistDict, start, end)
 
     print("Starting Task 2: UCS... \n")
     startTime=datetime.now()
@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
 
     
+
 
 
 
