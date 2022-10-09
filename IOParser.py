@@ -35,8 +35,8 @@ def inputParser():
         CoordDict = json.load(f)
 
     CoordDictParse = {}
-    for k,v in CoordDict.items():
-        CostDictParse[int(k)] = ((int(v[0]), int(v[1]) ))
+    for k,v in list(CoordDict.items()):
+        CoordDictParse[int(k)] = ((int(v[0]), int(v[1]) ))
 
     return GDictParse, DistDictParse, CostDictParse, CoordDictParse
 

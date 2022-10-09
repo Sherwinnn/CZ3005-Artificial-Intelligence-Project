@@ -11,11 +11,8 @@ if __name__ == '__main__':
 
     GDict, DistDict, CostDict, CoordDict = IOParser.inputParser()
     
-    #print(GDict['1'][0] == 1363)
-    #print(DistDict)
-    #print(DistDict['1,1363'])
     print("Starting Task 1: Dijkstra ... \n")
-    Task1.begin(GDict,start,end)
+    # Task1.begin(GDict,start,end)
 
     print("Starting Task 2: UCS... \n")
     Task2.begin(GDict, DistDict, CostDict, start, end, budget)
