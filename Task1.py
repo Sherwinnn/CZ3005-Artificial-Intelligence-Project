@@ -1,22 +1,42 @@
+import json
+import math
+from queue import PriorityQueue
+import sys
 import IOParser
 
-class Node:
-    def __init__(self, id, parent, dist, cost):
-        self.id = id
-        self.parent = parent  
-        self.dist = dist
-        self.cost = cost
-    # to sort nodes in pqueue based on total distance
-    def __lt__(self, next):
-        return self.dist < next.dist
 
-def dijkstra(GDict, start, end):
-    return
+def dijkstra(GDict, DistDict, start, end):
+    
+    pq = PriorityQueue()
+    pq.put([0, [start]])
+
+    distanceDict = {start : sys.maxsize}
+    travelledDict = {}
+    
+    while pq:
+        FirstNode = pq.get()
+        currentDist = FirstNode[0]
+        currentPath = FirstNode[1]
+        currentNode = currentPath[-1]
+        travelledDict[currentNode] = 1
+
+        if currentNode == end:
+            return currentPath, currentDist
+
+        for neighbour in GDict[currentNode]:
+            if neighbour not in distanceDict:
+                distanceDict[neighbour] = sys.maxsize
+
+            newPath = currentPath[:]
+            newPath.append(neighbour)
+            newDistance = currentDist+ DistDict[min(currentNode,neighbour),max(currentNode,neighbour)]
+
+            if neighbour not in travelledDict and distanceDict[neighbour] > newDistance:
+                distanceDict[neighbour] = newDistance
+                pq.put([newDistance, newPath])
+                
     
 
-
-def begin(GDict, start, end):
-    pass
-    # path, cost, numvisited = dijkstra(GDict,start,end)
-
-    # print()
+def begin(GDict, DistDict, start, end):
+    Path, Dist = dijkstra(GDict, DistDict, start, end)
+    IOParser.outputParser((Path, Dist, 0))
