@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # Task1.begin(GDict,start,end)
 
     print("Starting Task 2: UCS... \n")
-    # Task2.begin(GDict, DistDict, CostDict, start, end, budget)
+    Task2.begin(GDict, DistDict, CostDict, start, end, budget)
 
     print("Starting Task 3: ... \n")
     Task3.begin(GDict, DistDict, CostDict, CoordDict, start, end, budget)
