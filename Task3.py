@@ -2,7 +2,7 @@ import IOParser
 from queue import PriorityQueue
 from math import cos,sin,acos
 
-def heuristic(CostDict, CoordDict, curnode, end, child, distancet, budget):
+def heuristic(CoordDict, end, child, distancet):
     #calculate great circle distance
     r = 6371 #km
     a , x = CoordDict[child]
@@ -13,16 +13,17 @@ def heuristic(CostDict, CoordDict, curnode, end, child, distancet, budget):
 
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     path = []
-    travelled = {}
+    travelled = {} #stores {node : distance from start to that node}
     openlist = PriorityQueue()
-    openlist.put( (0, (start,start,0) ) ) #(fvalue, (node, parent, gvalue) )
+    openlist.put( (0, (start,start, 0, budget) ) ) #(fvalue, (node, parent, gvalue, budgetRemaining) )
     distance = 0
 
     while not openlist.empty():
-        curnode,parent,distFromStart = openlist.get()[1]
+        curnode,parent,distFromStart,budgetRemaining = openlist.get()[1]
         travelled[curnode] = parent
         if curnode==end:
             distance = distFromStart
+            budget -= budgetRemaining
             pathnode = end
             while (pathnode!=start):
                 path.append(pathnode)
@@ -33,17 +34,20 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
             if child not in travelled:
                 # print("child:",child)
                 distStartToChild = distFromStart+DistDict[min(curnode,child),max(curnode,child)]
+                budgetAfterDeduct = budgetRemaining-CostDict[min(curnode,child),max(curnode,child)]
+                if budgetAfterDeduct<0:  #check if not enough budget
+                    continue
                 openlist.put(
                     (
-                        heuristic(CostDict, 
+                        heuristic( 
                         CoordDict,
-                        curnode, end, child, 
+                        end, child, 
                         distStartToChild, 
-                        budget),
-                        (child,curnode,distStartToChild)
+                        ),
+                        (child,curnode,distStartToChild, budgetAfterDeduct)
                     )
                 )
-    return path,distance,0
+    return path,distance,budget
 
 def begin(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     return IOParser.outputParser(aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget))
