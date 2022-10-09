@@ -24,13 +24,13 @@ def dijkstra(GDict, DistDict, start, end):
             if adjNode not in distanceDict:
                 distanceDict[adjNode] = sys.maxsize     # Setting maximum or infinite value if distance not stored in distanceDict yet
 
-            newPath = currentPath[:]
-            newPath.append(adjNode)
+            newPath = currentPath[:]                    
+            newPath.append(adjNode)                     # Adding the neighbouring node to the new path
             newDistance = currentDist+ DistDict[min(currentNode,adjNode),max(currentNode,adjNode)]
 
             if adjNode not in travelledDict and distanceDict[adjNode] > newDistance:    # Dijkstra algorithm's greedy approach to obtaining shortest path and distance
-                distanceDict[adjNode] = newDistance                                     
-                pq.put([newDistance, newPath])
+                distanceDict[adjNode] = newDistance                                     # Update the new found shorter distance to distanceDict
+                pq.put([newDistance, newPath])                                          # Enqueue based on shortest newDistance 
                 
     
 
