@@ -1,15 +1,17 @@
 import IOParser
 from queue import PriorityQueue
-from math import cos,sin,acos
+from math import cos,sin,acos,sqrt
 
 def heuristic(CoordDict, end, child, distancet):
     #calculate great circle distance
-    r = 6371 #km
-    a , x = CoordDict[child]
-    b , y = CoordDict[end]
-    greatCircleDist = r*acos(cos(a) * cos(b) * cos(x-y) + sin(a) * sin(b))
+    #r = 6371 #km
+    #a , x = CoordDict[child]
+    #b , y = CoordDict[end]
+    #greatCircleDist = r*acos(cos(a) * cos(b) * cos(x-y) + sin(a) * sin(b))
 
-    return distancet+greatCircleDist
+    #Calculate Chebyshew 
+    # min((CoordDict[end][0]-CoordDict[child][0] ) , (CoordDict[end][1]- CoordDict[child][1]))
+    return distancet + sqrt( (CoordDict[end][0]-CoordDict[child][0] )**2 + (CoordDict[end][1]- CoordDict[child][1])**2 )
 
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     path = []
@@ -20,7 +22,7 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
 
     while not openlist.empty():
         curnode,parent,distFromStart,budgetRemaining = openlist.get()[1]
-        if travelled.get(curnode)!=None and distFromStart>travelled[curnode][1]:
+        if travelled.get(curnode)!=None and budgetRemaining<travelled[curnode][2]:
             continue
         
         travelled[curnode] = (parent,distFromStart,budgetRemaining)
@@ -32,7 +34,7 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
             #     path.append(pathnode)
             #     pathnode = travelled[pathnode]
             # path = path[::-1]
-            break;
+            break
         for child in GDict[curnode]:
             # print("child:",child)
             distStartToChild = distFromStart+DistDict[min(curnode,child),max(curnode,child)]
