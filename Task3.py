@@ -20,33 +20,35 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
 
     while not openlist.empty():
         curnode,parent,distFromStart,budgetRemaining = openlist.get()[1]
-        travelled[curnode] = parent
+        if travelled.get(curnode)!=None and distFromStart>travelled[curnode][1]:
+            continue
+        
+        travelled[curnode] = (parent,distFromStart,budgetRemaining)
         if curnode==end:
             distance = distFromStart
             budget -= budgetRemaining
             pathnode = end
-            while (pathnode!=start):
-                path.append(pathnode)
-                pathnode = travelled[pathnode]
-            path = path[::-1]
+            # while (pathnode!=start):
+            #     path.append(pathnode)
+            #     pathnode = travelled[pathnode]
+            # path = path[::-1]
             break;
         for child in GDict[curnode]:
-            if child not in travelled:
-                # print("child:",child)
-                distStartToChild = distFromStart+DistDict[min(curnode,child),max(curnode,child)]
-                budgetAfterDeduct = budgetRemaining-CostDict[min(curnode,child),max(curnode,child)]
-                if budgetAfterDeduct<0:  #check if not enough budget
-                    continue
-                openlist.put(
-                    (
-                        heuristic( 
-                        CoordDict,
-                        end, child, 
-                        distStartToChild, 
-                        ),
-                        (child,curnode,distStartToChild, budgetAfterDeduct)
-                    )
+            # print("child:",child)
+            distStartToChild = distFromStart+DistDict[min(curnode,child),max(curnode,child)]
+            budgetAfterDeduct = budgetRemaining-CostDict[min(curnode,child),max(curnode,child)]
+            if budgetAfterDeduct<0:  #check if not enough budget
+                continue
+            openlist.put(
+                (
+                    heuristic( 
+                    CoordDict,
+                    end, child, 
+                    distStartToChild, 
+                    ),
+                    (child,curnode,distStartToChild, budgetAfterDeduct)
                 )
+            )
     return path,distance,budget
 
 def begin(GDict, DistDict, CostDict, CoordDict, start, end, budget):
