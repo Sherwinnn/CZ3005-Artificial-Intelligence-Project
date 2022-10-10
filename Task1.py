@@ -16,6 +16,8 @@ def dijkstra(GDict, DistDict, CostDict, start, end):
         currentDist = FirstNode[0]                      # Setting the accumulated distance thus far as currentDist
         currentPath = FirstNode[1]                      # Obtaining the current path to be taken based on the dequeued node 
         currentNode = currentPath[-1]                   # Setting the current node as last taken node in currentPath
+        if(travelledDict.get(currentNode) != None):
+            continue
         travelledDict[currentNode] = 1                  # Setting values of current node in Travelled dict as 1 (visited)
         numberOfVisited += 1
 
