@@ -9,7 +9,6 @@ def dijkstra(GDict, DistDict, CostDict, start, end):
 
     distanceDict = {start : sys.maxsize}
     travelledDict = {}
-    currentCost = 0
     
     numberOfVisited = 0
     while pq:
@@ -19,7 +18,14 @@ def dijkstra(GDict, DistDict, CostDict, start, end):
         currentNode = currentPath[-1]                   # Setting the current node as last taken node in currentPath
         travelledDict[currentNode] = 1                  # Setting values of current node in Travelled dict as 1 (visited)
         numberOfVisited += 1
+
         if currentNode == end:                                          # Check if goal is reached
+            currentCost = 0
+            old_node = -1
+            for node in currentPath:
+                if old_node!=-1:
+                    currentCost += CostDict[old_node,node]
+                old_node = node
             return currentPath, currentDist, currentCost, numberOfVisited           # Return the accumulated shortest path and distance thus far
 
         for adjNode in GDict[currentNode]:              # Parsing through each node connected to current node
@@ -34,10 +40,7 @@ def dijkstra(GDict, DistDict, CostDict, start, end):
             if adjNode not in travelledDict and distanceDict[adjNode] > newDistance:    # Dijkstra algorithm's greedy approach to obtaining shortest path and distance
                 distanceDict[adjNode] = newDistance                                     # Update the new found shorter distance to distanceDict
                 pq.put([newDistance, newPath])                                          # Enqueue based on shortest newDistance
-                currentCost = currentCost + CostDict[currentNode, adjNode]
-                 
                 
-    
 
 def begin(GDict, DistDict, CostDict, start, end):
     IOParser.outputParser(dijkstra(GDict, DistDict, CostDict, start, end))
