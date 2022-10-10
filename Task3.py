@@ -1,6 +1,6 @@
 import IOParser
 from queue import PriorityQueue
-from math import cos,sin,acos,sqrt
+from math import cos,sin,acos,sqrt,dist
 
 def heuristic(CoordDict, end, child, distancet):
     #calculate great circle distance
@@ -11,28 +11,31 @@ def heuristic(CoordDict, end, child, distancet):
 
     #Calculate Chebyshew 
     # min((CoordDict[end][0]-CoordDict[child][0] ) , (CoordDict[end][1]- CoordDict[child][1]))
-    return distancet + sqrt( (CoordDict[end][0]-CoordDict[child][0] )**2 + (CoordDict[end][1]- CoordDict[child][1])**2 )
+    # return distancet + sqrt( (CoordDict[end][0]-CoordDict[child][0] )**2 + (CoordDict[end][1]- CoordDict[child][1])**2 )
+
+    #Calculate Euclidean
+    return distancet+sqrt( (CoordDict[end][0]-CoordDict[child][0] )**2 + (CoordDict[end][1]- CoordDict[child][1])**2 )
 
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
-    path = []
     travelled = {} #stores {node : distance from start to that node}
     openlist = PriorityQueue()
-    openlist.put( (0, (start,start, 0, budget) ) ) #(fvalue, (node, parent, gvalue, budgetRemaining) )
+    openlist.put( (0, (start,[start], 0, budget) ) ) #(fvalue, (node, path, gvalue, budgetRemaining) )
     distance = 0
 
     while not openlist.empty():
-        curnode,parent,distFromStart,budgetRemaining = openlist.get()[1]
-        if travelled.get(curnode)!=None and budgetRemaining<travelled[curnode][2]:
+        curnode,path,distFromStart,budgetRemaining = openlist.get()[1]
+        if travelled.get(curnode)!=None and budgetRemaining<travelled[curnode][1]:
             continue
         
-        travelled[curnode] = (parent,distFromStart,budgetRemaining)
+        travelled[curnode] = (distFromStart,budgetRemaining)
         if curnode==end:
             distance = distFromStart
             budget -= budgetRemaining
-            pathnode = end
+            path+=[curnode]
+            # pathnode = end
             # while (pathnode!=start):
             #     path.append(pathnode)
-            #     pathnode = travelled[pathnode]
+            #     pathnode = travelled[pathnode][0]
             # path = path[::-1]
             break
         for child in GDict[curnode]:
@@ -48,7 +51,7 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
                     end, child, 
                     distStartToChild, 
                     ),
-                    (child,curnode,distStartToChild, budgetAfterDeduct)
+                    (child,path+[curnode],distStartToChild, budgetAfterDeduct)
                 )
             )
     return path,distance,budget
