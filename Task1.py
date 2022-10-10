@@ -36,7 +36,7 @@ def dijkstra(GDict, DistDict, CostDict, start, end):
 
             newPath = currentPath[:]                    
             newPath.append(adjNode)                     # Adding the neighbouring node to the new path
-            newDistance = currentDist+ DistDict[min(currentNode,adjNode),max(currentNode,adjNode)]
+            newDistance = currentDist+ DistDict[currentNode,adjNode]
             
 
             if adjNode not in travelledDict and distanceDict[adjNode] > newDistance:    # Dijkstra algorithm's greedy approach to obtaining shortest path and distance
