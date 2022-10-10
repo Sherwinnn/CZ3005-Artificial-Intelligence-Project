@@ -9,16 +9,16 @@ def dijkstra(GDict, DistDict, start, end):
 
     distanceDict = {start : sys.maxsize}
     travelledDict = {}
-    
+    numberOfVisited = 0
     while pq:
         FirstNode = pq.get()
         currentDist = FirstNode[0]                      # Setting the accumulated distance thus far as currentDist
         currentPath = FirstNode[1]                      # Obtaining the current path to be taken based on the dequeued node 
         currentNode = currentPath[-1]                   # Setting the current node as last taken node in currentPath
         travelledDict[currentNode] = 1                  # Setting values of current node in Travelled dict as 1 (visited)
-
-        if currentNode == end:                          # Check if goal is reached
-            return currentPath, currentDist             # Return the accumulated shortest path and distance thus far
+        numberOfVisited += 1
+        if currentNode == end:                                          # Check if goal is reached
+            return currentPath, currentDist  ,numberOfVisited           # Return the accumulated shortest path and distance thus far
 
         for adjNode in GDict[currentNode]:              # Parsing through each node connected to current node
             if adjNode not in distanceDict:
@@ -35,5 +35,5 @@ def dijkstra(GDict, DistDict, start, end):
     
 
 def begin(GDict, DistDict, start, end):
-    Path, Dist = dijkstra(GDict, DistDict, start, end)
-    IOParser.outputParser((Path, Dist, 0))
+    Path, Dist, numberOfVisited = dijkstra(GDict, DistDict, start, end)
+    IOParser.outputParser((Path, Dist, 0,numberOfVisited))

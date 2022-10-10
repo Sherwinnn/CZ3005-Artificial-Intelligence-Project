@@ -41,8 +41,8 @@ def inputParser():
     return GDictParse, DistDictParse, CostDictParse, CoordDictParse
 
 def outputParser(out):
-    (path, Dist, Cost) = out
+    (path, Dist, Cost, numberOfVisited) = out
     print("Shortest path:", "->".join([str(int) for int in path]),".")
     print("Shortest Distance:", Dist)
     print("Total Energy Cost:", Cost)
-    print()
+    print("Total Number of Visited Node:", numberOfVisited)

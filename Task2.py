@@ -9,13 +9,14 @@ def UCS(GDict, DistDict, CostDict, start, end, budget):
     parent = {}
     ansDist = 0 
     ansCost = 0
+    numberOfVisited = 0
     while not q.empty():
         (curDist, _temp) = q.get()
         (u, anc, curCost) = _temp
         
         if visited.get(u) != None and  curCost > visited[u]:
             continue
-        
+        numberOfVisited += 1
         visited[u] = curCost
         if(parent.get(u) == None):
             parent[u] = {}
@@ -38,11 +39,11 @@ def UCS(GDict, DistDict, CostDict, start, end, budget):
     node = end
     distV = ansDist
     while node != -1:
-        print(node)
+        #print(node)
         path.append(node)
         oldnode = parent[node][int(distV)][0]
         
-        print(len(parent[node][int(distV)]), " ".join([str(int) for int in parent[node][int(distV)]]))
+        #print(len(parent[node][int(distV)]), " ".join([str(int) for int in parent[node][int(distV)]]))
         if(oldnode == -1):
             break
         distV -= DistDict[(node,oldnode)]
@@ -56,14 +57,14 @@ def UCS(GDict, DistDict, CostDict, start, end, budget):
         if last == -1:
             last = node 
             continue
-        if(node ==986):
-            print("CHANGE")
-            node = 988
+        # if(node ==986):
+        #     print("CHANGE")
+        #     node = 988
         distV += DistDict[(last,node)]
         costV += CostDict[(last,node)]
         last = node
     print(distV,costV)
-    return (path,ansDist,ansCost)
+    return (path,ansDist,ansCost,numberOfVisited)
 
 def begin(GDict, DistDict, CostDict, start, end, budget):
     IOParser.outputParser(UCS(GDict, DistDict, CostDict, start, end, budget))
