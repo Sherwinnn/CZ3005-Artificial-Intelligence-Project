@@ -3,12 +3,14 @@ import sys
 import IOParser
 
 
-def dijkstra(GDict, DistDict, start, end):
+def dijkstra(GDict, DistDict, CostDict, start, end):
     pq = PriorityQueue()
     pq.put([0, [start]])
 
     distanceDict = {start : sys.maxsize}
     travelledDict = {}
+    currentCost = 0
+    
     numberOfVisited = 0
     while pq:
         FirstNode = pq.get()
@@ -18,7 +20,7 @@ def dijkstra(GDict, DistDict, start, end):
         travelledDict[currentNode] = 1                  # Setting values of current node in Travelled dict as 1 (visited)
         numberOfVisited += 1
         if currentNode == end:                                          # Check if goal is reached
-            return currentPath, currentDist  ,numberOfVisited           # Return the accumulated shortest path and distance thus far
+            return currentPath, currentDist, currentCost, numberOfVisited           # Return the accumulated shortest path and distance thus far
 
         for adjNode in GDict[currentNode]:              # Parsing through each node connected to current node
             if adjNode not in distanceDict:
@@ -27,13 +29,15 @@ def dijkstra(GDict, DistDict, start, end):
             newPath = currentPath[:]                    
             newPath.append(adjNode)                     # Adding the neighbouring node to the new path
             newDistance = currentDist+ DistDict[min(currentNode,adjNode),max(currentNode,adjNode)]
+            
 
             if adjNode not in travelledDict and distanceDict[adjNode] > newDistance:    # Dijkstra algorithm's greedy approach to obtaining shortest path and distance
                 distanceDict[adjNode] = newDistance                                     # Update the new found shorter distance to distanceDict
-                pq.put([newDistance, newPath])                                          # Enqueue based on shortest newDistance 
+                pq.put([newDistance, newPath])                                          # Enqueue based on shortest newDistance
+                currentCost = currentCost + CostDict[currentNode, adjNode]
+                 
                 
     
 
-def begin(GDict, DistDict, start, end):
-    Path, Dist, numberOfVisited = dijkstra(GDict, DistDict, start, end)
-    IOParser.outputParser((Path, Dist, 0,numberOfVisited))
+def begin(GDict, DistDict, CostDict, start, end):
+    IOParser.outputParser(dijkstra(GDict, DistDict, CostDict, start, end))
