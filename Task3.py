@@ -14,7 +14,7 @@ def heuristic(CoordDict, end, child, distancet):
     che = min((CoordDict[end][0]-CoordDict[child][0] ) , (CoordDict[end][1]- CoordDict[child][1]))
     # Calculate mahathan distance
     man = abs(CoordDict[end][0]-CoordDict[child][0] ) + abs(CoordDict[end][1]- CoordDict[child][1])
-    return distancet + eu
+    return distancet + che
 
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     travelled = {} #stores {node : cost remaining from that node}
@@ -48,7 +48,7 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
                     (child,path+[curnode],distStartToChild, childcost)
                 )
             )
-    return path,distance,budget,numberOfVisited
+    return path,distance,cost,numberOfVisited
 
 def begin(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     return IOParser.outputParser(aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget))
