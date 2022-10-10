@@ -19,22 +19,23 @@ def heuristic(CoordDict, end, child, distancet):
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     travelled = {} #stores {node : cost remaining from that node}
     openlist = PriorityQueue()
-    openlist.put( (0, (start,start, 0, budget) ) ) #(fvalue, (node, parent, gvalue, budgetRemaining) )
+    openlist.put( (0, (start,[], 0, 0) ) ) #(fvalue, (node, path, gvalue, Cost) )
     distance = -1
     numberOfVisited = 0
+
     while not openlist.empty():
         curnode,path,distFromStart,cost = openlist.get()[1]
-        if travelled.get(curnode)!=None and cost>travelled[curnode][1]:
+        if travelled.get(curnode)!=None and cost>travelled[curnode]:
             continue
         numberOfVisited += 1
-        travelled[curnode] = (parent,distFromStart,budgetRemaining)
+        travelled[curnode] = cost
         if curnode==end:
             distance = distFromStart
             path+=[curnode]
             break
         for child in GDict[curnode]:
-            distStartToChild = distFromStart+DistDict[min(curnode,child),max(curnode,child)]
-            childcost= cost + CostDict[min(curnode,child),max(curnode,child)]
+            distStartToChild = distFromStart+DistDict[curnode,child]
+            childcost= cost + CostDict[curnode, child]
             if childcost>budget:  #check if not enough budget
                 continue
             openlist.put(
