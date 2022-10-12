@@ -49,7 +49,7 @@ def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
                     (child,path+[curnode],distStartToChild, childcost)
                 )
             )
-    return path,distance,budget,numberOfVisited
+    return path,distance,cost,numberOfVisited
 
 def begin(GDict, DistDict, CostDict, CoordDict, start, end, budget):
     return IOParser.outputParser(aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget))
