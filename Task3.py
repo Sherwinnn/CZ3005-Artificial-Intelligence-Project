@@ -14,31 +14,32 @@ def heuristic(CoordDict, end, child, distancet):
     che = min((CoordDict[end][0]-CoordDict[child][0] ) , (CoordDict[end][1]- CoordDict[child][1]))
     # Calculate mahathan distance
     man = abs(CoordDict[end][0]-CoordDict[child][0] ) + abs(CoordDict[end][1]- CoordDict[child][1])
-    return distancet + eu
+    return distancet + eu  # We used Euclidean Distance
 
 def aStar(GDict, DistDict, CostDict, CoordDict, start, end, budget):
-    travelled = {} #stores {node : cost remaining from that node}
-    openlist = PriorityQueue()
-    openlist.put( (0, (start,[], 0, 0) ) ) #(fvalue, (node, path, gvalue, Cost) )
+    visited = {}                                #stores {node : cost remaining from that node}
+    pq = PriorityQueue()
+    pq.put( (0, (start,[], 0, 0) ) )            #(fvalue, (node, path, gvalue, Cost) )
     distance = -1
     numberOfVisited = 0
-
-    while not openlist.empty():
-        curnode,path,distFromStart,cost = openlist.get()[1]
-        if travelled.get(curnode)!=None and cost>travelled[curnode]:
+    
+    while not pq.empty():
+        curnode,path,distFromStart,cost = pq.get()[1]
+        if visited.get(curnode)!=None and cost>visited[curnode]:
             continue
         numberOfVisited += 1
-        travelled[curnode] = cost
-        if curnode==end:
+        visited[curnode] = cost
+        if curnode==end:                        # Reached end node
             distance = distFromStart
             path+=[curnode]
             break
+
         for child in GDict[curnode]:
             distStartToChild = distFromStart+DistDict[curnode,child]
             childcost= cost + CostDict[curnode, child]
             if childcost>budget:  #check if not enough budget
                 continue
-            openlist.put(
+            pq.put(
                 (
                     heuristic( 
                     CoordDict,
